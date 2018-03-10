@@ -1,0 +1,74 @@
+service: swagger2graphene
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  exclude:
+    - node_modules/**
+    - .idea/**
+    - .requirements/**
+    - runLocal/**
+    - README.md
+    - package.json
+    - package-lock.json
+    - requirements.txt
+  excludeDevDependencies: false
+
+
+custom:
+  app_acronym: swagger-graphene
+  stage: "${opt:stage, self:provider.stage}"
+  region: "${opt:region, self:provider.region}"
+  stack_name: ${self:custom.app_acronym}-${self:custom.stage}
+
+provider:
+  name: aws
+  runtime: python3.6
+  accountID: ${opt:accountID}
+  stage : dev
+  region: us-west-2
+  environment: ${file(serverless.env.yml):${opt:stage}.env}
+  deploymentBucket:
+    name: serverless-bucket-us-west-2
+  tracing: false
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource:
+        - 'Fn::Join':
+          - ':'
+          -
+            - 'arn:aws:logs'
+            - Ref: 'AWS::Region'
+            - Ref: 'AWS::AccountId'
+            - 'log-group:/aws/lambda/*:*:*'
+    - Effect: Allow
+      Action:
+        - ec2:CreateNetworkInterface
+        - ec2:DescribeNetworkInterfaces
+        - ec2:DetachNetworkInterface
+        - ec2:DeleteNetworkInterface
+        - kms:Decrypt
+      Resource: "*"
+
+functions:
+  graphqlApp:
+    name: "${self:service}-${self:custom.stage}"
+    description: Swagger GraphQL App
+    handler: src/index.main_handler
+    memorySize: 960
+    timeout: 30
+    environment:
+      source_s3_bucket: ${opt:source_s3_bucket, 'swagger-graphene-bucket'}
+    events:
+      - http:
+          path: swagger-graphql
+          method: post
+          cors: true
+          integration: lambda

@@ -1,0 +1,3 @@
+{
+  "config_reader_test.py::TestHandler::test_put_get_configs": true
+}

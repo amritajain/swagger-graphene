@@ -1,0 +1,9 @@
+graphene==1.4.1
+six>=1.10.0
+graphql-core==1.1
+graphql-relay==0.4.5
+promise==2.0.2
+requests
+iso8601==0.1.12
+pyaml==16.12.2
+boto3
