@@ -24,7 +24,7 @@ class TestHandler(unittest.TestCase):
         swagger_definitions = json.loads(swagger_json)
 
         # Get data from api
-        api_source = "https://github.com/amritajain/swagger-graphene/blob/master/data/api-simple-pet"
+        api_source = "https://raw.githubusercontent.com/amritajain/swagger-graphene/master/data/api-simple-pet"
         api_data = HttpWrapper().call_api(api_source)
 
         fields = SwaggerWrapper(swagger_definitions['definitions'], api_data).swagger_to_graphene(entity)
@@ -43,7 +43,7 @@ class TestHandler(unittest.TestCase):
 
         swagger_definitions = json.loads(swagger_json)
 
-        api_source = "https://github.com/amritajain/swagger-graphene/blob/master/data/api-pet"
+        api_source = "https://raw.githubusercontent.com/amritajain/swagger-graphene/master/data/api-pet"
         api_data = HttpWrapper().call_api(api_source)
 
 

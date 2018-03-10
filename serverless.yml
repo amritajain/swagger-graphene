@@ -32,7 +32,7 @@ provider:
   region: us-west-2
   environment: ${file(serverless.env.yml):${opt:stage}.env}
   deploymentBucket:
-    name: serverless-bucket-us-west-2
+    name: ${opt:deployment_s3_bucket, 'serverless-bucket-us-west-2'}
   tracing: false
   iamRoleStatements:
     - Effect: Allow
@@ -64,8 +64,6 @@ functions:
     handler: src/index.main_handler
     memorySize: 960
     timeout: 30
-    environment:
-      source_s3_bucket: ${opt:source_s3_bucket, 'swagger-graphene-bucket'}
     events:
       - http:
           path: swagger-graphql

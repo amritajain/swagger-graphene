@@ -7,3 +7,4 @@ requests
 iso8601==0.1.12
 pyaml==16.12.2
 boto3
+pytest
