@@ -28,11 +28,11 @@ provider:
   name: aws
   runtime: python3.6
   accountID: ${opt:accountID}
-  stage : dev
+  stage : ${opt:stage, 'dev'}
   region: us-west-2
   environment: ${file(serverless.env.yml):${opt:stage}.env}
   deploymentBucket:
-    name: ${opt:deployment_s3_bucket, 'serverless-bucket-us-west-2'}
+    name: ${opt:deployment_bucket}
   tracing: false
   iamRoleStatements:
     - Effect: Allow
