@@ -25,7 +25,7 @@ custom:
   stack_name: ${self:custom.app_acronym}-${self:custom.stage}
 
 provider:
-  name: aws
+  name: cloud_provider
   runtime: python3.6
   accountID: ${opt:accountID}
   stage : ${opt:stage, 'dev'}
